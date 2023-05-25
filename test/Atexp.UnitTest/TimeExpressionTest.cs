@@ -50,6 +50,10 @@ namespace Atexp.UnitTest
         [InlineData("w=2", "2023-05-23 15:41:08")]
 
 
+        [InlineData("LastDayOfMonth=9", "2023-05-23")]
+        [InlineData("lastdayofmonth=9", "2023-05-23")]
+        [InlineData("ldom=9", "2023-05-23")]
+
         [InlineData("d=23 & month=5 & hour = 15", "2023-05-23 15:41:08")]
 
         public void ShouldMatch(string expression, string dateTime)

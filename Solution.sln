@@ -4,12 +4,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6C7E5914-CD6B-40F1-BFD7-8FB17E3EAE11}"
+	ProjectSection(SolutionItems) = preProject
+		src\Directory.Build.props = src\Directory.Build.props
+		src\Directory.Build.targets = src\Directory.Build.targets
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{9D50B35B-1EAA-4620-B0A6-245456051247}"
+	ProjectSection(SolutionItems) = preProject
+		test\Directory.Build.props = test\Directory.Build.props
+		test\Directory.Build.targets = test\Directory.Build.targets
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atexp", "src\Atexp\Atexp.csproj", "{04DA400E-6550-4F54-A3B5-BEB263425211}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atexp", "src\Atexp\Atexp.csproj", "{04DA400E-6550-4F54-A3B5-BEB263425211}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atexp.UnitTest", "test\Atexp.UnitTest\Atexp.UnitTest.csproj", "{80082334-C0D0-4CD6-A9EF-540DFB3F5BDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Atexp.UnitTest", "test\Atexp.UnitTest\Atexp.UnitTest.csproj", "{80082334-C0D0-4CD6-A9EF-540DFB3F5BDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

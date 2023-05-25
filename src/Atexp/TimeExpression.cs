@@ -23,6 +23,7 @@ namespace Atexp
             AddResolvers(new MinuteTimeValue(), "Minute", "minute", "min", "mm", "m");
             AddResolvers(new SecondTimeValue(), "Second", "second", "sec", "ss", "s");
             AddResolvers(new WeekTimeValue(), "Week", "week", "www", "w");
+            AddResolvers(new LastDayTimeValue(), "LastDayOfMonth", "lastdayofmonth", "ldom");
             static void AddResolvers(ITimeValue valueResolver, params string[] names)
             {
                 Array.ForEach(names, (name) => valueResolvers.Add(name, valueResolver));

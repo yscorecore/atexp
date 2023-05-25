@@ -39,14 +39,21 @@ namespace Atexp
             return time.Datetime.Month;
 
         }
-
-
     }
     public record DayTimeValue : ITimeValue
     {
         public int GetValue(Time time)
         {
             return time.Datetime.Day;
+        }
+    }
+    //当月的倒数第几天
+    public record LastDayTimeValue : ITimeValue
+    {
+        public int GetValue(Time time)
+        {
+            var nextMonth = new DateTime(time.Datetime.Year, time.Datetime.Month, 1).AddMonths(1);
+            return (int)(nextMonth - time.Datetime.Date).TotalDays;
         }
     }
     public record Hour24TimeValue : ITimeValue

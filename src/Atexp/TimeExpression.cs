@@ -1,16 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Atexp
 {
     public class TimeExpression
     {
+        private static Dictionary<string, ITimeValue> valueResolvers = new Dictionary<string, ITimeValue>();
+        static TimeExpression()
+        {
+            AddResolvers(new Year4TimeValue(), "Year", "year", "yyyy", "yyy", "yy", "y");
+            AddResolvers(new MonthTimeValue(), "Month", "month", "MM", "M");
+            AddResolvers(new DayTimeValue(), "Day", "day", "dd", "d");
+            AddResolvers(new Hour24TimeValue(), "Hour", "hour", "HH", "H", "hh", "h");
+            AddResolvers(new MinuteTimeValue(), "Minute", "minute", "min", "mm", "m");
+            AddResolvers(new SecondTimeValue(), "Second", "second", "sec", "ss", "s");
+            AddResolvers(new WeekTimeValue(), "Week", "week", "www", "w");
+            static void AddResolvers(ITimeValue valueResolver, params string[] names)
+            {
+                Array.ForEach(names, (name) => valueResolvers.Add(name, valueResolver));
+            }
+        }
+        private readonly string[] names;
+        private readonly Delegate @delegate;
+        private TimeExpression(string[] names, Delegate @delegate)
+        {
+            this.names = names;
+            this.@delegate = @delegate;
+        }
         public static bool Match(string expression, DateTimeOffset dateTimeOffset)
         {
-            return true;
+            return Create(expression).Match(Time.FromDatetimeOffset(dateTimeOffset));
         }
+        public static TimeExpression Create(string expression)
+        {
+            if (expression.Length > 1024)
+            {
+                throw new TimeExpressionException("Time expression too long.");
+            }
+            var names = Regex.Matches(expression, @"[a-zA-Z]+")
+                    .OfType<Match>()
+                    .Select(p => p.Value)
+                    .Distinct().ToArray();
+
+            var unknowName = names.Where(p => !valueResolvers.ContainsKey(p)).FirstOrDefault();
+            if (unknowName != null)
+            {
+                throw new TimeExpressionException($"Unknow time part name '{unknowName}'.");
+            }
+            try
+            {
+                var parameters = names.Select(p => Expression.Parameter(typeof(int), p)).ToArray();
+                var expar = DynamicExpressionParser.ParseLambda(parameters, typeof(bool), expression);
+                var delegateFunc = expar.Compile();
+                return new TimeExpression(names, delegateFunc);
+            }
+            catch (Exception ex)
+            {
+
+                throw new TimeExpressionException("Parse time expression error.");
+            }
+
+        }
+
+        public bool Match(Time time)
+        {
+            object[] values = this.names.Select(p => valueResolvers[p].GetValue(time)).Cast<object>().ToArray();
+            return (bool)this.@delegate.DynamicInvoke(values);
+        }
+
     }
 }

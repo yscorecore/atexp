@@ -54,6 +54,14 @@ namespace Atexp.UnitTest
         [InlineData("lastdayofmonth=9", "2023-05-23")]
         [InlineData("ldom=9", "2023-05-23")]
 
+        [InlineData("TimeStamp%5=3", "2023-05-23 15:41:08")]
+        [InlineData("timestamp%5=3", "2023-05-23 15:41:08")]
+        [InlineData("ts%5=3", "2023-05-23 15:41:08")]
+
+        [InlineData("TimeStampOfDay=68", "2023-05-23 00:01:08")]
+        [InlineData("timestampofday=68", "2023-05-23 00:01:08")]
+        [InlineData("tsod=68", "2023-05-23 00:01:08")]
+
         [InlineData("d=23 & month=5 & hour = 15", "2023-05-23 15:41:08")]
 
         public void ShouldMatch(string expression, string dateTime)

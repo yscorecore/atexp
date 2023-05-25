@@ -13,7 +13,7 @@ namespace Atexp
 {
     public class TimeExpression
     {
-        private static Dictionary<string, ITimeValue> valueResolvers = new Dictionary<string, ITimeValue>();
+        private static readonly Dictionary<string, ITimeValue> valueResolvers = new();
         static TimeExpression()
         {
             AddResolvers(new Year4TimeValue(), "Year", "year", "yyyy", "yyy", "yy", "y");
@@ -24,6 +24,8 @@ namespace Atexp
             AddResolvers(new SecondTimeValue(), "Second", "second", "sec", "ss", "s");
             AddResolvers(new WeekTimeValue(), "Week", "week", "www", "w");
             AddResolvers(new LastDayTimeValue(), "LastDayOfMonth", "lastdayofmonth", "ldom");
+            AddResolvers(new TimeStampTimeValue(), "TimeStamp", "timestamp", "ts");
+            AddResolvers(new TimeStampOfDayTimeValue(), "TimeStampOfDay", "timestampofday", "tsod");
             static void AddResolvers(ITimeValue valueResolver, params string[] names)
             {
                 Array.ForEach(names, (name) => valueResolvers.Add(name, valueResolver));

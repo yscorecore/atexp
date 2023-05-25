@@ -84,6 +84,22 @@ namespace Atexp
             return time.Datetime.Second;
         }
     }
+    public record TimeStampTimeValue : ITimeValue
+    {
+        internal static readonly DateTimeOffset StartTime = new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        public int GetValue(Time time)
+        {
+            var val = (int)(time.Datetime - StartTime).TotalSeconds;
+            return val;
+        }
+    }
+    public record TimeStampOfDayTimeValue : ITimeValue
+    {
+        public int GetValue(Time time)
+        {
+            return (int)time.Datetime.TimeOfDay.TotalSeconds;
+        }
+    }
     public record WeekTimeValue : ITimeValue
     {
         public int GetValue(Time time)

@@ -49,6 +49,9 @@ namespace Atexp.UnitTest
         [InlineData("www=2", "2023-05-23 15:41:08")]
         [InlineData("w=2", "2023-05-23 15:41:08")]
 
+
+        [InlineData("d=23 & month=5 & hour = 15", "2023-05-23 15:41:08")]
+
         public void ShouldMatch(string expression, string dateTime)
         {
             TimeExpression.Match(expression, DateTimeOffset.Parse(dateTime)).Should().BeTrue();
@@ -101,7 +104,9 @@ namespace Atexp.UnitTest
         }
 
         [Theory]
-        [InlineData("", "2023-05-23")]
+        [InlineData("", "Invalid expression.")]
+        [InlineData("abc=1", "Unknow time part name 'abc'.")]
+        [InlineData("year+1", "Invalid expression.")]
         public void ShouldThrowTimeExpression(string expression, string message)
         {
             Action action = () => TimeExpression.Match(expression, DateTimeOffset.Now);

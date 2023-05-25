@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -38,8 +39,38 @@ namespace Atexp
         {
             return Create(expression).Match(Time.FromDatetimeOffset(dateTimeOffset));
         }
+
+        private static ConcurrentDictionary<string, object> cache = new ConcurrentDictionary<string, object>();
         public static TimeExpression Create(string expression)
         {
+            var obj = cache.GetOrAdd(expression, (exp) =>
+            {
+                try
+                {
+                    return CreateInternal(exp);
+                }
+                catch (Exception ex)
+                {
+                    return ex;
+                }
+            });
+            if (obj is TimeExpression te)
+            {
+                return te;
+            }
+            else
+            {
+                throw (Exception)obj;
+            }
+        }
+        public static TimeExpression CreateInternal(string expression)
+        {
+
+            if (string.IsNullOrEmpty(expression))
+            {
+                throw new TimeExpressionException("Invalid expression.");
+            }
+
             if (expression.Length > 1024)
             {
                 throw new TimeExpressionException("Time expression too long.");
@@ -63,12 +94,9 @@ namespace Atexp
             }
             catch (Exception ex)
             {
-
-                throw new TimeExpressionException("Parse time expression error.");
+                throw new TimeExpressionException("Invalid expression.", ex);
             }
-
         }
-
         public bool Match(Time time)
         {
             object[] values = this.names.Select(p => valueResolvers[p].GetValue(time)).Cast<object>().ToArray();

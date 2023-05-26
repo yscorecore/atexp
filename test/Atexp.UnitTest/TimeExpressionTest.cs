@@ -87,10 +87,39 @@ namespace Atexp.UnitTest
         [InlineData("isld=0", "2020-02-28 15:41:08")]
 
         [InlineData("d=23 & month=5 & hour = 15", "2023-05-23 15:41:08")]
+      
         public void ShouldMatch(string expression, string dateTime)
         {
             TimeExpression.Match(expression, DateTimeOffset.Parse(dateTime)).Should().BeTrue();
         }
+
+        [Theory]
+        [InlineData("[+8]Year=2023", "2023-05-23")]
+        [InlineData("[-8]Year=2023", "2023-05-23")]
+        [InlineData("[+8:00]Year=2023", "2023-05-23")]
+        [InlineData("[-8:00]Year=2023", "2023-05-23")]
+        [InlineData("[+08:00]Year=2023", "2023-05-23")]
+        [InlineData("[-08:00]Year=2023", "2023-05-23")]
+        [InlineData("[Utc+8]Year=2023", "2023-05-23")]
+        [InlineData("[utc+8]Year=2023", "2023-05-23")]
+        [InlineData("[UTC+8]Year=2023", "2023-05-23")]
+        [InlineData("[UTC+8:00]Year=2023", "2023-05-23")]
+        [InlineData("[UTC + 8:00]Year=2023", "2023-05-23")]
+        [InlineData("[UTC - 8:00]Year=2023", "2023-05-23")]
+        [InlineData("[UTC + 08:00]Year=2023", "2023-05-23")]
+
+        [InlineData("[Gmt+8]Year=2023", "2023-05-23")]
+        [InlineData("[gmt+8]Year=2023", "2023-05-23")]
+        [InlineData("[GMT+8]Year=2023", "2023-05-23")]
+        [InlineData("[GMT+8:00]Year=2023", "2023-05-23")]
+        [InlineData("[GMT + 8:00]Year=2023", "2023-05-23")]
+        [InlineData("[GMT - 8:00]Year=2023", "2023-05-23")]
+        [InlineData("[GMT + 08:00] Year=2023", "2023-05-23")]
+        public void ShouldMatchTimeZone(string expression, string dateTime)
+        {
+            TimeExpression.Match(expression, DateTimeOffset.Parse(dateTime)).Should().BeTrue();
+        }
+
 
         [Theory]
         [InlineData("Year!=2023", "2023-05-23")]

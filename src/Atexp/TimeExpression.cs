@@ -72,6 +72,22 @@ namespace Atexp
                 throw (Exception)obj;
             }
         }
+        private static (bool, TimeSpan, string) PickTimeZone(string expression)
+        {
+            var match = Regex.Match(expression, @"^\[\s*(UTC|GMT)*\s*(?<op>[+-])\s*(?<h>\d{1,2})(:(?<m>\d{2}))*\s*\]", RegexOptions.IgnoreCase);
+            if (match.Success)
+            {
+                var op = match.Groups["op"].Value;
+                var hour = int.Parse(match.Groups["h"].Value);
+                var m = int.Parse(match.Groups["m"].Success ? match.Groups["m"].Value : "0");
+                var timespan = op == "+" ? TimeSpan.FromMinutes(hour * 60 + m) : -TimeSpan.FromMinutes(hour * 60 + m);
+                return (true, timespan, expression.Substring(match.Length));
+            }
+            else
+            {
+                return (false, TimeSpan.Zero, expression);
+            }
+        }
         public static TimeExpression CreateInternal(string expression)
         {
 
@@ -84,6 +100,15 @@ namespace Atexp
             {
                 throw new TimeExpressionException("Time expression too long.");
             }
+
+            var (hasTimeZone, timespan, leftExpression) = PickTimeZone(expression);
+
+            if (hasTimeZone)
+            {
+                expression = leftExpression;
+            }
+
+
             var names = Regex.Matches(expression, @"[a-zA-Z]+")
                     .OfType<Match>()
                     .Select(p => p.Value)

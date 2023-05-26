@@ -62,8 +62,12 @@ namespace Atexp.UnitTest
         [InlineData("timestampofday=68", "2023-05-23 00:01:08")]
         [InlineData("tsod=68", "2023-05-23 00:01:08")]
 
-        [InlineData("d=23 & month=5 & hour = 15", "2023-05-23 15:41:08")]
 
+        [InlineData("Time=154108", "2023-05-23 15:41:08")]
+        [InlineData("time=154108", "2023-05-23 15:41:08")]
+        [InlineData("t=154108", "2023-05-23 15:41:08")]
+
+        [InlineData("d=23 & month=5 & hour = 15", "2023-05-23 15:41:08")]
         public void ShouldMatch(string expression, string dateTime)
         {
             TimeExpression.Match(expression, DateTimeOffset.Parse(dateTime)).Should().BeTrue();

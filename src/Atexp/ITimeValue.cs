@@ -107,4 +107,12 @@ namespace Atexp
             return (int)time.Datetime.DayOfWeek;
         }
     }
+    public record TimeTimeValue : ITimeValue
+    {
+        public int GetValue(Time time)
+        {
+            var dateTime = time.Datetime;
+            return dateTime.Hour * 10000 + dateTime.Minute * 100 + dateTime.Second;
+        }
+    }
 }

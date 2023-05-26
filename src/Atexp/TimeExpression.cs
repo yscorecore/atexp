@@ -26,6 +26,7 @@ namespace Atexp
             AddResolvers(new LastDayTimeValue(), "LastDayOfMonth", "lastdayofmonth", "ldom");
             AddResolvers(new TimeStampTimeValue(), "TimeStamp", "timestamp", "ts");
             AddResolvers(new TimeStampOfDayTimeValue(), "TimeStampOfDay", "timestampofday", "tsod");
+            AddResolvers(new TimeTimeValue(), "Time", "time", "t");
             static void AddResolvers(ITimeValue valueResolver, params string[] names)
             {
                 Array.ForEach(names, (name) => valueResolvers.Add(name, valueResolver));

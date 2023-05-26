@@ -115,4 +115,12 @@ namespace Atexp
             return dateTime.Hour * 10000 + dateTime.Minute * 100 + dateTime.Second;
         }
     }
+    public record DateTimeValue : ITimeValue
+    {
+        public int GetValue(Time time)
+        {
+            var dateTime = time.Datetime;
+            return dateTime.Year * 10000 + dateTime.Month * 100 + dateTime.Day;
+        }
+    }
 }

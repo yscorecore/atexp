@@ -67,6 +67,9 @@ namespace Atexp.UnitTest
         [InlineData("time=154108", "2023-05-23 15:41:08")]
         [InlineData("t=154108", "2023-05-23 15:41:08")]
 
+        [InlineData("Date=20230523", "2023-05-23 15:41:08")]
+        [InlineData("date=20230523", "2023-05-23 15:41:08")]
+
         [InlineData("d=23 & month=5 & hour = 15", "2023-05-23 15:41:08")]
         public void ShouldMatch(string expression, string dateTime)
         {

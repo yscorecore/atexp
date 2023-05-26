@@ -70,6 +70,22 @@ namespace Atexp.UnitTest
         [InlineData("Date=20230523", "2023-05-23 15:41:08")]
         [InlineData("date=20230523", "2023-05-23 15:41:08")]
 
+        [InlineData("IsLeapYear=1", "2020-02-29 15:41:08")]
+        [InlineData("isleapyear=1", "2020-02-29 15:41:08")]
+        [InlineData("isly=1", "2020-02-29 15:41:08")]
+        [InlineData("isly=0", "2023-05-23 15:41:08")]
+
+
+        [InlineData("IsLeapMonth=1", "2020-02-29 15:41:08")]
+        [InlineData("isleapmonth=1", "2020-02-29 15:41:08")]
+        [InlineData("islm=1", "2020-02-29 15:41:08")]
+        [InlineData("islm=0", "2020-01-29 15:41:08")]
+
+        [InlineData("IsLeapDay=1", "2020-02-29 15:41:08")]
+        [InlineData("isleapday=1", "2020-02-29 15:41:08")]
+        [InlineData("isld=1", "2020-02-29 15:41:08")]
+        [InlineData("isld=0", "2020-02-28 15:41:08")]
+
         [InlineData("d=23 & month=5 & hour = 15", "2023-05-23 15:41:08")]
         public void ShouldMatch(string expression, string dateTime)
         {

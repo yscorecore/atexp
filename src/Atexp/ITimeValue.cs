@@ -123,4 +123,27 @@ namespace Atexp
             return dateTime.Year * 10000 + dateTime.Month * 100 + dateTime.Day;
         }
     }
+    public record IsLeapYearTimeValue : ITimeValue
+    {
+        public int GetValue(Time time)
+        {
+            return Convert.ToInt32(DateTime.IsLeapYear(time.Datetime.Year));
+        }
+    }
+    public record IsLeapMonthTimeValue : ITimeValue
+    {
+        public int GetValue(Time time)
+        {
+            var dateTime = time.Datetime;
+            return Convert.ToInt32(DateTime.IsLeapYear(dateTime.Year) && dateTime.Month == 2);
+        }
+    }
+    public record IsLeapDayTimeValue : ITimeValue
+    {
+        public int GetValue(Time time)
+        {
+            var dateTime = time.Datetime;
+            return Convert.ToInt32(DateTime.IsLeapYear(dateTime.Year) && dateTime.Month == 2 && dateTime.Day == 29);
+        }
+    }
 }

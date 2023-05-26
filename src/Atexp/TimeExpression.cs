@@ -28,10 +28,14 @@ namespace Atexp
             AddResolvers(new TimeStampOfDayTimeValue(), "TimeStampOfDay", "timestampofday", "tsod");
             AddResolvers(new TimeTimeValue(), "Time", "time", "t");
             AddResolvers(new DateTimeValue(), "Date", "date");
+            AddResolvers(new IsLeapYearTimeValue(), "IsLeapYear", "isleapyear", "isly");
+            AddResolvers(new IsLeapMonthTimeValue(), "IsLeapMonth", "isleapmonth", "islm");
+            AddResolvers(new IsLeapDayTimeValue(), "IsLeapDay", "isleapday", "isld");
             static void AddResolvers(ITimeValue valueResolver, params string[] names)
             {
                 Array.ForEach(names, (name) => valueResolvers.Add(name, valueResolver));
             }
+
         }
         private readonly string[] names;
         private readonly Delegate @delegate;
